@@ -47,8 +47,8 @@ public class SubjectCreateExecuteAction extends Action {
         // 科目名のチェック
         if (name == null || name.isBlank()) {
             errors.add("科目名を入力してください。");
-        } else if (name.length() > 10) {
-            errors.add("科目名は10文字以内で入力してください。");
+        } else if (name.length() > 20) {
+            errors.add("科目名は20文字以内で入力してください。");
         }
 
         // 重複チェック（コードと名称が未入力でない場合のみ実行）

@@ -32,11 +32,14 @@
 				
 				<div class="col dflex align-items-center justify-content-center mx2 rounded shadow"
 					style="height: 10rem background-color: #dbb;">
+<<<<<<< HEAD
 					<a href="StudentList.action">科目管理</a>
 				</div>
 				
 				<div class="col dflex align-items-center justify-content-center mx2 rounded shadow"
 					style="height: 10rem background-color: #dbb;">
+=======
+>>>>>>> branch 'master' of https://github.com/tama-git/Student_manager.git
 					<a href="SubjectList.action">科目管理</a>
 				</div>
 				
@@ -44,6 +47,7 @@
 					style="height: 10rem background-color: #dbb;">
 					<a href="StudentList.action">クラス管理</a>
 				</div>
+				
 			</div>
 			
 		</section>

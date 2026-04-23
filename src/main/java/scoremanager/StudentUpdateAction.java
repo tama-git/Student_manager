@@ -24,6 +24,7 @@ public class StudentUpdateAction extends Action {
 		StudentDAO sDao = new StudentDAO();
 		Student student = sDao.get(no);
 
+		
 		// 3. ClassNumDaoを使ってクラス一覧を取得（シーケンス図：ClassNumDaoから取得）
 		ClassNumDAO cDao = new ClassNumDAO();
 		List<String> classList = cDao.filter(teacher.getSchool());

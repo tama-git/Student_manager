@@ -36,7 +36,6 @@ public class StudentUpdateExecuteAction extends Action {
 		StudentDAO dao = new StudentDAO();
 		dao.save(student);
 
-		// 【重要】ここの戻り値のJSPファイル名が正しいか確認！
 		return "student_update_done.jsp";
 	}
 }

@@ -1,5 +1,6 @@
 package scoremanager;
 
+import bean.School;
 import bean.Subject;
 import bean.Teacher;
 import dao.SubjectDAO;
@@ -9,25 +10,24 @@ import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
 public class SubjectUpdateExecuteAction extends Action {
-	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		request.setCharacterEncoding("UTF-8");
-		HttpSession session = request.getSession();
-		Teacher teacher = (Teacher) session.getAttribute("user");
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		// リクエストパラメータの取得
-		String cd = request.getParameter("cd");
-		String name = request.getParameter("name");
+        HttpSession session = request.getSession();
 
-		// Studentインスタンスの組み立て
-		Subject subject = new Subject();
-		subject.setCd(cd);
-		subject.setName(name);
-		// DAOで更新実行
-		SubjectDAO dao = new SubjectDAO();
-		subject.setSchool(teacher.getSchool());
-		dao.save(subject);
+        Teacher teacher = (Teacher) session.getAttribute("user");
+        School school = teacher.getSchool();
 
-		return "subject_update_done.jsp";
-	}
+        String cd = request.getParameter("cd");
+        String name = request.getParameter("name");
+
+        Subject subject = new Subject();
+        subject.setCd(cd);
+        subject.setName(name);
+        subject.setSchool(school);
+
+        SubjectDAO dao = new SubjectDAO();
+        dao.save(subject);
+
+        return "/scoremanager/subject_list.jsp";
+    }
 }

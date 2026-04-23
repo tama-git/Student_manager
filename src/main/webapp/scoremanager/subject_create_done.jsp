@@ -14,7 +14,7 @@
 
                 <div class="d-flex gap-2">
                     <a href="SubjectCreate.action" class="btn btn-primary">戻る</a>
-                    <a href="SubjectList.action" class="btn btn-secondary">学生一覧</a>
+                    <a href="SubjectList.action" class="btn btn-secondary">科目一覧</a>
                 </div>
             </div>
         </section>

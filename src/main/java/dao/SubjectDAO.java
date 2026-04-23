@@ -60,7 +60,7 @@ public class SubjectDAO extends DAO {
 			// schoolがnullの場合はResultSetから取得を試みる
 			if (school == null) {
 				School sc = new School();
-				sc.setCd(rs.getString("school_cd"));
+				sc.setCd(rs.getString("cd"));
 				s.setSchool(sc);
 			} else {
 				s.setSchool(school);

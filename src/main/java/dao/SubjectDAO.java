@@ -50,6 +50,7 @@ public class SubjectDAO extends DAO {
 		return subject;
 	}
  
+    
 	private List<Subject> postFilter(ResultSet rs, School school) throws Exception {
 		List<Subject> list = new ArrayList<>();
 		while (rs.next()) {

@@ -22,7 +22,7 @@ public class StudentUpdateExecuteAction extends Action {
 		String classNum = request.getParameter("classNum");
 		// チェックボックス（在学フラグ）の判定
 		boolean isAttend = request.getParameter("isAttend") != null;
-
+		
 		// Studentインスタンスの組み立て
 		Student student = new Student();
 		student.setNo(no);

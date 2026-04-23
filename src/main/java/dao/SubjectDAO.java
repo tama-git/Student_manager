@@ -69,7 +69,7 @@ public class SubjectDAO extends DAO {
 		}
 		return list;
 	}
-    
+	
     public boolean save(Subject subject) throws Exception {
 		Connection con = getConnection();
 		PreparedStatement st = null;
@@ -84,7 +84,7 @@ public class SubjectDAO extends DAO {
 				st.setString(3, subject.getSchool().getCd());
 			} else {
 				st = con.prepareStatement(
-						"update student set name=? where cd=?");
+						"update subject set name=? where cd=?");
 				st.setString(1, subject.getName());
 				st.setString(2, subject.getCd());
 			}

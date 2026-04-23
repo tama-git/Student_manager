@@ -18,7 +18,7 @@ public class FrontController extends HttpServlet {
 		) throws ServletException, IOException {
 			PrintWriter out=response.getWriter();
 			try {
-				// ログインチェック
+				// --- 追加：ログインチェック ---
 				HttpSession session = request.getSession();
 				String path = request.getServletPath();
 				// ログイン画面（Login.actionやLoginExecute.action）以外へのアクセス時にチェック
@@ -27,6 +27,7 @@ public class FrontController extends HttpServlet {
 					request.getRequestDispatcher("/scoremanager/login.jsp").forward(request, response);
 					return; // 処理を中断
 				}
+				// ----------------------------
  
 				String servletPath = path.substring(1); // 変数名が重複しないよう調整
 				String name = servletPath.replace(".a", "A").replace('/', '.');

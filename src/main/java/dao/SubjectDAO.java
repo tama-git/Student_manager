@@ -96,4 +96,26 @@ public class SubjectDAO extends DAO {
 		}
 		return count > 0;
 	}
+    
+    public boolean delete(String cd) throws Exception {
+        Connection con = getConnection();
+        PreparedStatement st = null;
+        int count = 0;
+
+        try {
+            // 科目コード(cd)を基準に削除
+            st = con.prepareStatement("delete from subject where cd=?");
+            st.setString(1, cd);
+            
+            // 実行された行数を取得
+            count = st.executeUpdate();
+        } finally {
+            if (st != null) {
+                st.close();
+            }
+            con.close();
+        }
+
+        return count > 0;
+    }
 }

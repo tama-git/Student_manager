@@ -14,7 +14,8 @@ import tool.Action;
 
 public class SubjectCreateExecuteAction extends Action {
 
-    @Override
+    @SuppressWarnings("unused")
+	@Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         request.setCharacterEncoding("UTF-8");
@@ -49,17 +50,12 @@ public class SubjectCreateExecuteAction extends Action {
         } else if (name.length() > 10) {
             errors.add("科目名は10文字以内で入力してください。");
         }
-        
-        
-        
-        
-        
 
         // 重複チェック（コードと名称が未入力でない場合のみ実行）
         if (errors.isEmpty()) {
             School school = teacher.getSchool();
             // 指定した学校に同じ科目コードが既に存在するか確認
-            if (dao.get(cd, school) != null) {
+            if (dao.get(cd) != null) {
                 errors.add("科目コードが重複しています。");
             }
         }

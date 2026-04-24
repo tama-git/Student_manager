@@ -150,7 +150,7 @@ public class TestRegistExecuteAction extends Action {
             }
         }
 
-        // DoneActionは作らず、登録完了JSPへ直接遷移する
+        
         return "test_regist_done.jsp";
     }
 

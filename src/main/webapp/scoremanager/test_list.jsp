@@ -46,15 +46,6 @@
                             </c:forEach>
                         </select>
                     </div>
-                    <div class="col-1">
-                        <label class="form-label small" for="no-select">回数</label>
-                        <select class="form-select" id="no-select" name="f4">
-                            <option value="0">----</option>
-                            <c:forEach var="i" begin="1" end="2">
-                                <option value="${i}" <c:if test="${i==f4}">selected</c:if>>${i}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
                     <div class="col-2 text-center">
                         <button class="btn btn-secondary w-100" id="filter-button-subject">検索</button>
                     </div>

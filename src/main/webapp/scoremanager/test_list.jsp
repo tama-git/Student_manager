@@ -13,16 +13,6 @@
             
             <div class="border mx-3 mb-3 p-3 rounded" id="filter-container">
             
-            
-            	<c:if test="${not empty errors}">
-                <div class="alert alert-danger mx-3">
-                    <ul class="mb-0">
-                        <c:forEach var="error" items="${errors}">
-                            <li>${error}</li>
-                        </c:forEach>
-                    </ul>
-                </div>
-            	</c:if>
                 
                 <%-- 上段：科目情報による検索 --%>
                 <form method="get" action="TestListSubjectExecute.action" class="row border-bottom mb-3 pb-3 align-items-end">

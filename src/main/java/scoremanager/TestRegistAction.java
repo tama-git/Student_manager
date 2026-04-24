@@ -93,7 +93,7 @@ public class TestRegistAction extends Action {
         List<Integer> list = new ArrayList<>();
         int year = LocalDate.now().getYear();
 
-        for (int i = year - 10; i <= year + 10; i++) {
+        for (int i = year - 10; i <= year; i++) {
             list.add(i);
         }
         return list;

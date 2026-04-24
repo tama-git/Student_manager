@@ -22,13 +22,9 @@ public class TestRegistAction extends Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        Teacher teacher = (Teacher) request.getSession().getAttribute("user");
-        if (teacher == null) {
-            return "/scoremanager/login.jsp";
-        }
-
-        School school = teacher.getSchool();
-
+    	Teacher teacher = (Teacher) request.getSession().getAttribute("user");
+    	School school = teacher.getSchool();
+    	
         ClassNumDAO classNumDao = new ClassNumDAO();
         SubjectDAO subjectDao = new SubjectDAO();
         TestListSubjectDAO testListSubjectDao = new TestListSubjectDAO();

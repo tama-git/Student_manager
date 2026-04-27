@@ -18,7 +18,7 @@ ${param.scripts}
  
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">得点管理システム</a>
+            <a class="navbar-brand" href="menu.jsp">得点管理システム</a>
             
             <%-- ログインしている場合のみメニューボタン、ユーザー名、ログアウトボタンを表示 --%>
             <c:if test="${not empty user}">

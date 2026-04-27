@@ -41,6 +41,19 @@
                     </div>
                     <div class="col-2"><button class="btn btn-secondary w-100">検索</button></div>
                 </form>
+                
+                <%-- 下段：学生情報による検索 --%>
+                <form method="get" action="TestListStudentExecute.action" class="row align-items-end">
+                    <div class="col-1 fw-bold pb-2">学生情報</div>
+                    <div class="col-9">
+                        <label class="form-label small" for="student-no-input">学生番号</label>
+                        <input type="text" class="form-control" id="student-no-input" name="f10" 
+                               placeholder="学生番号を入力してください" value="${f10}">
+                    </div>
+                    <div class="col-2 text-center">
+                        <button class="btn btn-secondary w-100" type="submit">検索</button>
+                    </div>
+                </form>
             </div>
 
             <c:choose>

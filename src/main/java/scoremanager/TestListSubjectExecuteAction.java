@@ -1,12 +1,15 @@
-package scoremanager; // パッケージ名は環境に合わせて調整してください
+package scoremanager;
 
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.HashMap; // 追加
 import java.util.List;
+import java.util.Map;    // 追加
 
 import bean.Subject;
 import bean.Teacher;
 import bean.Test;
+import bean.TestListSubject; // 作成した新しいBean
 import dao.ClassNumDAO;
 import dao.SubjectDAO;
 import dao.TestDAO;
@@ -33,7 +36,6 @@ public class TestListSubjectExecuteAction extends Action {
         ClassNumDAO cNumDao = new ClassNumDAO();
 
         // 3. 検索処理
-        // 未選択(0)やnullを避けて実行
         if (entYearStr != null && !entYearStr.equals("0") && 
             classNum != null && !classNum.equals("0") && 
             subjectCd != null && !subjectCd.equals("0")) {
@@ -43,15 +45,36 @@ public class TestListSubjectExecuteAction extends Action {
                 Subject subject = sDao.get(subjectCd);
                 
                 if (subject != null) {
-                    // 成績リストを取得してリクエストにセット
-                    List<Test> tests = tDao.filter(entYear, classNum, subject, teacher.getSchool());
-                    req.setAttribute("tests", tests); 
+                    // ① DBから生の成績リスト（回数ごとに別レコード）を取得
+                    List<Test> rawTests = tDao.filter(entYear, classNum, subject, teacher.getSchool());
+                    
+                    // ② 学生番号をキーにして、データをまとめるためのMapを準備
+                    Map<String, TestListSubject> map = new HashMap<>();
+
+                    for (Test t : rawTests) {
+                        String sNo = t.getStudent().getNo();
+                        
+                        // Mapにまだその学生がいなければ、新しくTestListSubjectを作って入れる
+                        if (!map.containsKey(sNo)) {
+                            TestListSubject tls = new TestListSubject();
+                            tls.setEntYear(t.getStudent().getEntYear());
+                            tls.setStudentNo(sNo);
+                            tls.setStudentName(t.getStudent().getName());
+                            tls.setClassNum(t.getClassNum());
+                            map.put(sNo, tls);
+                        }
+                        
+                        // その学生のオブジェクトに対して、今回の回数(t.getNo())と点数(t.getPoint())を保存
+                        map.get(sNo).putPoint(t.getNo(), t.getPoint());
+                    }
+
+                    // ③ Mapの値をリストに変換してリクエストにセット（これでJSP側は1人1行になる）
+                    req.setAttribute("tests", new ArrayList<>(map.values())); 
                 }
             } catch (NumberFormatException e) {
-                // 数値変換失敗時の処理（必要に応じて）
+                // エラー処理
             }
         }
-        
 
         // 4. 表示状態の維持とプルダウンデータの再セット
         req.setAttribute("f1", entYearStr);
@@ -62,7 +85,6 @@ public class TestListSubjectExecuteAction extends Action {
         req.setAttribute("subjects", sDao.filter(teacher.getSchool()));
         req.setAttribute("classNum", cNumDao.filter(teacher.getSchool()));
 
-        // 5. 検索結果を表示するJSPへ
         return "test_list_subject.jsp";
     }
 

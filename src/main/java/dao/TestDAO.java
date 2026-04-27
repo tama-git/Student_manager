@@ -63,5 +63,82 @@ public class TestDAO extends DAO {
         }
         return list;
     }
-    // (他のメソッドは既存のままでOKです)
+
+    public List<Test> filter(Student student, School school) throws Exception {
+        List<Test> list = new ArrayList<>();
+        
+        // 学生番号(STUDENT_NO)で絞り込むSQL
+        String sql = baseSql + "WHERE t.STUDENT_NO = ? AND t.SCHOOL_CD = ? "
+                           + "ORDER BY t.SUBJECT_CD ASC, t.NO ASC";
+        
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, student.getNo());
+            statement.setString(2, school.getCd());
+            
+            ResultSet rSet = statement.executeQuery();
+            // 共通の postFilter メソッドを使って List<Test> に変換
+            list = postFilter(rSet, school);
+        }
+        return list;
+    }
+    
+ // TestDAO.java に追加
+ // 1件分の保存処理を「本当の登録処理」に書き換える
+ // ① リストを受け取って保存するメソッド（Actionから呼ばれる方）
+    public boolean save(List<Test> list) throws Exception {
+        int count = 0;
+        for (Test test : list) {
+            // 下にある ② のメソッドを1件ずつ呼び出す
+            boolean result = save(test); 
+            if (result) {
+                count++;
+            }
+        }
+        // 全件分、正しく処理できたら true
+        return count == list.size();
+    }
+
+    // ② 1件分をDBに保存するメソッド
+    public boolean save(Test test) throws Exception {
+        Connection connection = getConnection();
+        PreparedStatement statement = null;
+        int count = 0;
+
+        try {
+            // まずはUPDATE（更新）を試みる
+            String updateSql = "UPDATE TEST SET POINT = ? WHERE STUDENT_NO = ? AND SUBJECT_CD = ? AND NO = ? AND SCHOOL_CD = ?";
+            statement = connection.prepareStatement(updateSql);
+            statement.setInt(1, test.getPoint());
+            statement.setString(2, test.getStudent().getNo());
+            statement.setString(3, test.getSubject().getCd());
+            statement.setInt(4, test.getNo());
+            statement.setString(5, test.getSchool().getCd());
+            
+            count = statement.executeUpdate();
+
+            // 更新できなかったら（新規データなら）INSERT（挿入）する
+            if (count == 0) {
+                String insertSql = "INSERT INTO TEST (STUDENT_NO, SUBJECT_CD, SCHOOL_CD, NO, POINT, CLASS_NUM) VALUES (?, ?, ?, ?, ?, ?)";
+                statement.close(); // 前のstatementを閉じる
+                statement = connection.prepareStatement(insertSql);
+                statement.setString(1, test.getStudent().getNo());
+                statement.setString(2, test.getSubject().getCd());
+                statement.setString(3, test.getSchool().getCd());
+                statement.setInt(4, test.getNo());
+                statement.setInt(5, test.getPoint());
+                statement.setString(6, test.getClassNum());
+                
+                count = statement.executeUpdate();
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return count > 0;
+    }
+    
 }
+

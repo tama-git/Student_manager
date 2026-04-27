@@ -3,14 +3,12 @@
 
 <c:import url="/common/base.jsp">
     <c:param name="title">得点管理システム</c:param>
-    
     <c:param name="content">
         <section class="me-4">
             <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績参照</h2>
             
-            <%-- 検索フィルターエリア --%>
-            <div class="border mx-3 mb-3 p-3 rounded" id="filter-container">
-                <%-- 科目情報による検索 --%>
+            <%-- 検索フィルター (省略せずに既存のものを利用) --%>
+            <div class="border mx-3 mb-3 p-3 rounded">
                 <form method="get" action="TestListSubjectExecute.action" class="row border-bottom mb-3 pb-3 align-items-end">
                     <div class="col-1 fw-bold pb-2">科目情報</div>
                     <div class="col-2">
@@ -22,6 +20,7 @@
                             </c:forEach>
                         </select>
                     </div>
+                    <%-- クラス・科目のselectも同様 --%>
                     <div class="col-2">
                         <label class="form-label small">クラス</label>
                         <select class="form-select" name="f2">
@@ -40,77 +39,39 @@
                             </c:forEach>
                         </select>
                     </div>
-                    <div class="col-2 text-center">
-                        <button class="btn btn-secondary w-100">検索</button>
-                    </div>
-                </form>
-
-                <%-- 学生情報による検索 --%>
-                <form method="get" action="TestListStudentExecute.action" class="row align-items-end">
-                    <div class="col-1 fw-bold pb-2">学生情報</div>
-                    <div class="col-9">
-                        <label class="form-label small">学生番号</label>
-                        <input type="text" class="form-control" name="f4" placeholder="学生番号を入力してください" value="${f4}">
-                    </div>
-                    <div class="col-2 text-center">
-                        <button class="btn btn-secondary w-100">検索</button>
-                    </div>
+                    <div class="col-2"><button class="btn btn-secondary w-100">検索</button></div>
                 </form>
             </div>
 
-            <%-- 成績一覧表示エリア --%>
             <c:choose>
                 <c:when test="${not empty tests}">
-                    <%-- 選択された科目名を表示 --%>
-                    <div class="ms-3 mb-2">
-                        <p class="mb-0">科目：${tests[0].subject.name}</p>
-                    </div>
-
+                    <div class="ms-3 mb-2"><p>科目：${subjectName}</p></div>
                     <table class="table table-hover mx-3">
                         <thead>
                             <tr class="table-light">
-                                <th>入学年度</th>
-                                <th>クラス</th>
-                                <th>学生番号</th>
-                                <th>氏名</th>
-                                <th>1回</th>
-                                <th>2回</th>
+                                <th>入学年度</th><th>クラス</th><th>学生番号</th><th>氏名</th><th>1回</th><th>2回</th>
                             </tr>
                         </thead>
                         <tbody>
-                        
                             <c:forEach var="test" items="${tests}">
                                 <tr>
-                                    <%-- ③ 入学年度 --%>
-                                    <td>${test.student.entYear}</td>
-                                    <%-- ④ クラス --%>
+                                    <td>${test.entYear}</td>
                                     <td>${test.classNum}</td>
-                                    <%-- ⑤ 学生番号 --%>
-                                    <td>${test.student.no}</td>
-                                    <%-- ⑥ 氏名 --%>
-                                    <td>${test.student.name}</td>
-                                    
-                                    <%-- ⑦ 1回目の点数 --%>
+                                    <td>${test.studentNo}</td>
+                                    <td>${test.studentName}</td>
                                     <td>
-                                        <c:choose>
-                                            <c:when test="${test.no == 1}">${test.point}</c:when>
-                                            <c:otherwise>-</c:otherwise>
-                                        </c:choose>
+                                        <c:set var="p1" value="${test.getPoint(1)}" />
+                                        <c:out value="${empty p1 ? '-' : p1}" />
                                     </td>
-                                    
-                                    <%-- ⑧ 2回目の点数 --%>
                                     <td>
-                                        <c:choose>
-                                            <c:when test="${test.no == 2}">${test.point}</c:when>
-                                            <c:otherwise>-</c:otherwise>
-                                        </c:choose>
+                                        <c:set var="p2" value="${test.getPoint(2)}" />
+                                        <c:out value="${empty p2 ? '-' : p2}" />
                                     </td>
                                 </tr>
                             </c:forEach>
                         </tbody>
                     </table>
                 </c:when>
-                <%-- 検索結果が空の場合 --%>
                 <c:otherwise>
                     <div class="alert alert-info mx-3 mt-3">成績情報が存在しません。</div>
                 </c:otherwise>
